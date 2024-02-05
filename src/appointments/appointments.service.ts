@@ -35,6 +35,7 @@ export class AppoinmentsService {
     { appointment?: Appointment } | { statusCode: number; message: string }
   > {
     try {
+      
       const dateTime = moment.utc(dto?.dateTime).toISOString();
       const duplicateDate = await this.appointmentModel.findOne({
         dateTime,
