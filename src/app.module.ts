@@ -12,7 +12,7 @@ import { AppoinmentsModule } from './appointments/appointments.module';
       envFilePath: '.env',
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DB_URI),
+    MongooseModule.forRoot('mongodb+srv://islam:a6HiRXYXNeP4tHmn@cluster0.htkk47r.mongodb.net/'),
     AuthModule,
     AppoinmentsModule,
   ],
