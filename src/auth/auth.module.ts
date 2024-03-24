@@ -15,9 +15,9 @@ import { UserSchema } from './schemas/user.schema';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
-          secret: config.get<string>('islammadaev'),
+          secret: 'islammadaev',
           signOptions: {
-            expiresIn: config.get<string | number>('3d'),
+            expiresIn: '3d',
           },
         };
       },
