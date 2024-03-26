@@ -11,6 +11,8 @@ export class AppoinmentsService {
   constructor(
     @InjectModel(Appointment.name)
     private appointmentModel: Model<Appointment>,
+    @InjectModel(User.name)
+    private userModel: Model<User>,
   ) {}
 
   async fetchAllDateTime() {
@@ -35,11 +37,15 @@ export class AppoinmentsService {
     { appointment?: Appointment } | { statusCode: number; message: string }
   > {
     try {
-      
       const dateTime = moment.utc(dto?.dateTime).toISOString();
       const duplicateDate = await this.appointmentModel.findOne({
         dateTime,
       });
+      const user = await this.userModel.findOne();
+
+      if (user.isDayOff) {
+        throw new Error('Day off');
+      }
 
       if (duplicateDate) {
         throw new Error('Date already exists');

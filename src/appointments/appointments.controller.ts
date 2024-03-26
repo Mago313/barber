@@ -2,10 +2,12 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AppoinmentsService } from './appointments.service';
 import { Appointment } from './schemas/appointment.schema';
 import { AppointmentDto } from './dto/appointment.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('appointments')
 export class AppoinmentsController {
   constructor(private readonly appointmentService: AppoinmentsService) {}
+  
   @Get('/date-time')
   fetchAllDateTime() {
     return this.appointmentService.fetchAllDateTime();
