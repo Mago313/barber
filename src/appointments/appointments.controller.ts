@@ -1,19 +1,19 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AppoinmentsService } from './appointments.service';
-import { Appointment } from './schemas/appointment.schema';
 import { AppointmentDto } from './dto/appointment.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Controller('appointments')
 export class AppoinmentsController {
   constructor(private readonly appointmentService: AppoinmentsService) {}
-  
+
   @Get('/date-time')
   fetchAllDateTime() {
     return this.appointmentService.fetchAllDateTime();
   }
 
   @Get('/get')
+  @Auth('admin')
   getAppointments() {
     return this.appointmentService.getAppointments();
   }
@@ -23,11 +23,8 @@ export class AppoinmentsController {
     return this.appointmentService.createAppointment(dto);
   }
   @Patch('/status/:id')
-  
-  changeIsActive(
-    @Param('id') _id: string,
-    @Body() dto: { isActive: boolean },
-  ) {
+  @Auth('admin')
+  changeIsActive(@Param('id') _id: string, @Body() dto: { isActive: boolean }) {
     return this.appointmentService.changeIsActive(_id, dto);
   }
 }

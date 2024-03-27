@@ -50,3 +50,32 @@ server {
 
 
 }
+
+# cd barber
+
+# git pull
+# npm run build
+# rm -rf ../../var/www/dist
+# mv dist ../../var/www/
+# cd dist
+# pm2 stop main
+# pm2 start main.js
+
+#cd djj-web
+
+# git pull
+# npm run build
+# rm -rf ../../var/www/build
+# mv build ../../var/www/
+
+server {
+        server_name server.umardjj.ru www.server.umardjj.ru;
+        location /api {
+    proxy_pass http://localhost:2222;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+ }
+}
