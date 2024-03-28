@@ -63,7 +63,10 @@ export class AppoinmentsService {
 
       return { appointment };
     } catch (error) {
-      return { statusCode: 400, message: error.message };
+      if (error.code === 11000) {
+        throw new Error('Date already exists');
+      }
+      return { statusCode: error.code, message: error.message };
     }
   }
 
