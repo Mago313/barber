@@ -16,7 +16,7 @@ export class Appointment {
   @Prop()
   price: number;
 
-  @Prop()
+  @Prop({ unique: true })
   dateTime: Date;
 
   @Prop({ default: true })
