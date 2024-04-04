@@ -3,14 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schemas/user.schema';
-import { Model } from 'mongoose';
-import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dto/signup.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcryptjs';
+import { Model } from 'mongoose';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
+import { SignUpDto } from './dto/signup.dto';
+import { User } from './schemas/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -81,7 +81,7 @@ export class AuthService {
 
     const tokens = this.issueTokens(user.id);
 
-    return { ...tokens, isAdmin: user.isAdmin };
+    return { ...tokens, user: this.returnUserFields(user) };
   }
 
   async dayOff(dto: { isDayOff: boolean }): Promise<{ isDayOff: boolean }> {
