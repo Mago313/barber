@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Appointment } from './schemas/appointment.schema';
-import * as moment from 'moment';
 import { InjectModel } from '@nestjs/mongoose';
+import * as moment from 'moment';
 import { Model } from 'mongoose';
-import { AppointmentDto } from './dto/appointment.dto';
 import { User } from 'src/auth/schemas/user.schema';
+import { AppointmentDto } from './dto/appointment.dto';
+import { Appointment } from './schemas/appointment.schema';
 
 @Injectable()
-export class AppoinmentsService {
+export class AppointmentsService {
   constructor(
     @InjectModel(Appointment.name)
     private appointmentModel: Model<Appointment>,
@@ -23,12 +23,16 @@ export class AppoinmentsService {
     });
   }
 
-  async getAppointments() {
-    const appointment = await this.appointmentModel.find();
+  async getAppointments(limit: number) {
+    const appointments = await this.appointmentModel
+      .find()
+      .limit(limit)
+      .sort({ dateTime: 1 });
 
-    return appointment.map((appointment) => {
-      return appointment;
-    });
+    const totalAppointmentsCount = await this.appointmentModel.countDocuments();
+
+    const hasMore = appointments.length < totalAppointmentsCount;
+    return { hasMore, appointments };
   }
 
   async createAppointment(
@@ -70,21 +74,11 @@ export class AppoinmentsService {
     }
   }
 
-  async changeIsActive(_id: string, dto: { isActive: boolean }) {
+  async deleteAppointment(_id: string) {
     const appointment = await this.appointmentModel.findOne({
       _id: _id,
     });
-
     if (!appointment) throw new NotFoundException('Appointment not found');
-
-    if (!dto.isActive) {
-      await this.appointmentModel.findByIdAndDelete(_id);
-      return null;
-    } else {
-      await this.appointmentModel.updateOne(
-        { _id: _id },
-        { $set: { isActive: dto.isActive } },
-      );
-    }
+    return await this.appointmentModel.findByIdAndDelete(_id);
   }
 }

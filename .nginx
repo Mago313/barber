@@ -57,6 +57,7 @@ server {
 # npm run build
 # rm -rf ../../var/www/dist
 # mv dist ../../var/www/
+# npm run build
 # cd dist
 # pm2 stop main
 # pm2 start main.js

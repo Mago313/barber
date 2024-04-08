@@ -1,11 +1,19 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { AppoinmentsService } from './appointments.service';
-import { AppointmentDto } from './dto/appointment.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AppointmentsService } from './appointments.service';
+import { AppointmentDto } from './dto/appointment.dto';
 
 @Controller('appointments')
-export class AppoinmentsController {
-  constructor(private readonly appointmentService: AppoinmentsService) {}
+export class AppointmentsController {
+  constructor(private readonly appointmentService: AppointmentsService) {}
 
   @Get('/date-time')
   fetchAllDateTime() {
@@ -14,17 +22,17 @@ export class AppoinmentsController {
 
   @Get('/get')
   @Auth('admin')
-  getAppointments() {
-    return this.appointmentService.getAppointments();
+  async getAppointments(@Query('limit') limit: number) {
+    return await this.appointmentService.getAppointments(limit);
   }
 
   @Post('/create')
   create(@Body() dto: AppointmentDto) {
     return this.appointmentService.createAppointment(dto);
   }
-  @Patch('/status/:id')
+  @Delete('/delete/:id')
   @Auth('admin')
-  changeIsActive(@Param('id') _id: string, @Body() dto: { isActive: boolean }) {
-    return this.appointmentService.changeIsActive(_id, dto);
+  changeIsActive(@Param('id') _id: string) {
+    return this.appointmentService.deleteAppointment(_id);
   }
 }

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppoinmentsController } from './appointments.controller';
-import { AppoinmentsService } from './appointments.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppointmentSchema } from './schemas/appointment.schema';
-import { UserSchema } from 'src/auth/schemas/user.schema';
 import { AuthModule } from 'src/auth/auth.module';
+import { UserSchema } from 'src/auth/schemas/user.schema';
+import { AppointmentsController } from './appointments.controller';
+import { AppointmentsService } from './appointments.service';
+import { AppointmentSchema } from './schemas/appointment.schema';
 
 @Module({
   imports: [
@@ -14,8 +14,8 @@ import { AuthModule } from 'src/auth/auth.module';
     ]),
     AuthModule,
   ],
-  controllers: [AppoinmentsController],
-  providers: [AppoinmentsService],
+  controllers: [AppointmentsController],
+  providers: [AppointmentsService],
   exports: [],
 })
 export class AppoinmentsModule {}
